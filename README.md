@@ -31,5 +31,5 @@ This Builder configure the following Firewall settings
 Execute the following command as a user with root privileges.
 
 ```
-curl -s https://raw.githubusercontent.com/Takeru-Yamamoto/LAMP-Builder/script.bash | bash
+curl -s https://raw.githubusercontent.com/Takeru-Yamamoto/LAMP-Builder/master/script.bash | bash
 ```
