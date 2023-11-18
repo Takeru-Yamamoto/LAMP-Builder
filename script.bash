@@ -1,32 +1,49 @@
 #!/usr/bin/env bash
 
-# コメントの表示
+# #############################################################################
+# 処理部分
+# #############################################################################
+
+# -----------------------------------------------------------------------------
+# 開始メッセージの表示
+# -----------------------------------------------------------------------------
+
 echo ""
 echo "--------------------------------------------------"
 echo "Start Building LAMP Environment."
 echo "--------------------------------------------------"
 echo ""
 
-# 各種インストール
+# -----------------------------------------------------------------------------
+# Apache & Firewall
+# -----------------------------------------------------------------------------
 
-## Apacheのインストール
+# Apacheのインストール
 dnf -y install httpd httpd-devel
 systemctl start httpd
 systemctl enable httpd
 
-### Firewallの設定
+# Firewallの設定
 firewall-cmd --remove-service=cockpit --permanent
 firewall-cmd --remove-service=dhcpv6-client --permanent
 firewall-cmd --add-port=80/tcp --permanent
 firewall-cmd --add-port=443/tcp --permanent
 firewall-cmd --reload
 
-## MySQLのインストール
+# -----------------------------------------------------------------------------
+# MySQL
+# -----------------------------------------------------------------------------
+
+# MySQLのインストール
 dnf -y install mysql mysql-server
 systemctl start mysqld
 systemctl enable mysqld
 
-## PHPのインストール
+# -----------------------------------------------------------------------------
+# PHP
+# -----------------------------------------------------------------------------
+
+# PHPのインストール
 dnf -y module install php:remi-8.2
 dnf -y install php \
     php-cli \
@@ -53,29 +70,28 @@ dnf -y install php \
     php-soap \
     php-json
 
-### PHPの設定
-
-## PHPの設定ファイルのバックアップ
+# PHPの設定ファイルのバックアップ
 cp /etc/php.ini /etc/php.ini.bak
 
-## PHPの設定ファイルの編集
-
-### タイムゾーンの設定
+# タイムゾーンの設定
 sed -i -e "s/;date.timezone =/date.timezone = Asia\/Tokyo/g" /etc/php.ini
 
-### メモリの設定
+# メモリの設定
 sed -i -e "s/memory_limit = 128M/memory_limit = 512M/g" /etc/php.ini
 
-### post_max_size の設定
+# post_max_size の設定
 sed -i -e "s/post_max_size = 8M/post_max_size = 128M/g" /etc/php.ini
 
-### upload_max_filesize の設定
+# upload_max_filesize の設定
 sed -i -e "s/upload_max_filesize = 2M/upload_max_filesize = 128M/g" /etc/php.ini
 
-### Apacheの再起動
+# Apacheの再起動
 systemctl restart httpd
 
-# コメントの表示
+# -----------------------------------------------------------------------------
+# 終了メッセージの表示
+# -----------------------------------------------------------------------------
+
 echo ""
 echo "--------------------------------------------------"
 echo "Complete Building LAMP Environment."
