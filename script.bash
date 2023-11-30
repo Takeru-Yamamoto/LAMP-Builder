@@ -44,7 +44,7 @@ systemctl enable mysqld
 # -----------------------------------------------------------------------------
 
 # PHPのインストール
-dnf -y module install php:remi-8.2
+dnf -y module install php:remi-8.3
 dnf -y install php \
     php-cli \
     php-common \
